@@ -1,10 +1,14 @@
 import 'package:bmi_calculator/human.dart';
+import 'package:bmi_calculator/info_with_toggles.dart';
+import 'package:bmi_calculator/screens/result_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'bmi_card.dart';
-import 'constants.dart';
-import 'icon_content.dart';
+import '../constants.dart';
+import '../bmi_card.dart';
+import '../constants.dart';
+import '../icon_content.dart';
+import '../page_footer.dart';
 
 class InputPage extends StatefulWidget {
   @override
@@ -12,7 +16,7 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  final Human human = new Human(height: 175, weight: 50);
+  final Human human = new Human(height: 175, weight: 50, age: 18);
 
   void onGenderChange(Gender gender) {
     setState(() {
@@ -27,6 +31,18 @@ class _InputPageState extends State<InputPage> {
   void onHeighChange(double height) {
     setState(() {
       human.setHeight(height.round());
+    });
+  }
+
+  void onWeightChange(int weight) {
+    setState(() {
+      human.setWeight(weight);
+    });
+  }
+
+  void onAgeChange(int age) {
+    setState(() {
+      human.setAge(age);
     });
   }
 
@@ -96,20 +112,21 @@ class _InputPageState extends State<InputPage> {
                   ),
                   SliderTheme(
                     data: SliderTheme.of(context).copyWith(
+                      inactiveTrackColor: Color(0XFF8D8E98),
                       activeTrackColor: Colors.white,
                       overlayColor: kSecondaryColorTransparent,
                       thumbColor: kSecondaryColor,
                       thumbShape: RoundSliderThumbShape(
                         enabledThumbRadius: 15.0,
                       ),
-                      overlayShape: RoundSliderOverlayShape(overlayRadius: 30.0),
+                      overlayShape:
+                          RoundSliderOverlayShape(overlayRadius: 30.0),
                     ),
                     child: Slider(
                       value: human.getHeight().toDouble(),
                       min: 140,
                       max: 210,
                       onChanged: onHeighChange,
-                      inactiveColor: Color(0XFF8D8E98),
                     ),
                   )
                 ],
@@ -122,21 +139,35 @@ class _InputPageState extends State<InputPage> {
                 Expanded(
                   child: BMICard(
                     color: kActiveCardColor,
+                    child: InfoWithToggles(
+                      onPress: this.onWeightChange,
+                      value: human.getWeight(),
+                      label: 'WEIGHT',
+                    ),
                   ),
                 ),
                 Expanded(
                   child: BMICard(
                     color: kActiveCardColor,
+                    child: InfoWithToggles(
+                      onPress: this.onAgeChange,
+                      value: human.getAge(),
+                      label: 'AGE',
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-          Container(
-            color: kSecondaryColor,
-            margin: EdgeInsets.only(top: 10.0),
-            width: double.infinity,
-            height: kBottomContainerHeight,
+          PageFooter(
+            label: 'CALCULATE',
+            onPress: () => human.getGender() != null
+                ? Navigator.pushNamed(context, '/result',
+                    arguments: ResultArguments(
+                      bmi: human.getBMI(),
+                      bodyType: human.getBodyType(),
+                    ))
+                : {},
           ),
         ],
       ),

@@ -24,7 +24,9 @@ class Human {
   }
 
   void setAge(int age) {
-    this._age = age;
+    if (age >= 0 && age <= 110) {
+      this._age = age;
+    }
   }
 
   int getHeight() {
@@ -32,7 +34,9 @@ class Human {
   }
 
   void setHeight(int height) {
-    this._height = height;
+    if (height >= 40 && height <= 220) {
+      this._height = height;
+    }
   }
 
   int getWeight() {
@@ -40,8 +44,27 @@ class Human {
   }
 
   void setWeight(int weight) {
-    this._weight = weight;
+    if (weight >= 2 && weight <= 250) {
+      this._weight = weight;
+    }
+  }
+
+  double getBMI() {
+    if (this._weight != null && this._height != null) {
+      double height = this._height / 100;
+      return this._weight / (height * height);
+    }
+    return null;
+  }
+
+  BodyType getBodyType() {
+    double bmi = getBMI();
+    if (bmi <= 25) {
+      return BodyType.normal;
+    }
+    return BodyType.overweight;
   }
 }
 
 enum Gender { male, female }
+enum BodyType { normal, overweight }
