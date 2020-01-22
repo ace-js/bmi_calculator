@@ -1,14 +1,18 @@
-import 'package:bmi_calculator/human.dart';
-import 'package:bmi_calculator/info_with_toggles.dart';
-import 'package:bmi_calculator/screens/result_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../constants.dart';
-import '../bmi_card.dart';
-import '../constants.dart';
-import '../icon_content.dart';
-import '../page_footer.dart';
+import 'package:bmi_calculator/enums.dart';
+import 'package:bmi_calculator/constants.dart';
+
+import 'package:bmi_calculator/classes/human.dart';
+import 'package:bmi_calculator/classes/calculator_brain.dart';
+
+import 'package:bmi_calculator/screens/result_page.dart';
+
+import 'package:bmi_calculator/components/bottom_button.dart';
+import 'package:bmi_calculator/components/bmi_card.dart';
+import 'package:bmi_calculator/components/icon_content.dart';
+import 'package:bmi_calculator/components/info_with_toggles.dart';
 
 class InputPage extends StatefulWidget {
   @override
@@ -110,24 +114,11 @@ class _InputPageState extends State<InputPage> {
                       )
                     ],
                   ),
-                  SliderTheme(
-                    data: SliderTheme.of(context).copyWith(
-                      inactiveTrackColor: Color(0XFF8D8E98),
-                      activeTrackColor: Colors.white,
-                      overlayColor: kSecondaryColorTransparent,
-                      thumbColor: kSecondaryColor,
-                      thumbShape: RoundSliderThumbShape(
-                        enabledThumbRadius: 15.0,
-                      ),
-                      overlayShape:
-                          RoundSliderOverlayShape(overlayRadius: 30.0),
-                    ),
-                    child: Slider(
-                      value: human.getHeight().toDouble(),
-                      min: 140,
-                      max: 210,
-                      onChanged: onHeighChange,
-                    ),
+                  Slider(
+                    value: human.getHeight().toDouble(),
+                    min: 140,
+                    max: 210,
+                    onChanged: onHeighChange,
                   )
                 ],
               ),
@@ -159,15 +150,22 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
-          PageFooter(
+          BottomButton(
             label: 'CALCULATE',
-            onPress: () => human.getGender() != null
-                ? Navigator.pushNamed(context, '/result',
-                    arguments: ResultArguments(
-                      bmi: human.getBMI(),
-                      bodyType: human.getBodyType(),
-                    ))
-                : {},
+            onPress: () {
+              if (human.getGender() != null) {
+                CalculatorBrain calculatorBrain = new CalculatorBrain(
+                  height: human.getHeight(),
+                  weight: human.getWeight(),
+                );
+                Navigator.pushNamed(context, '/result',
+                    arguments: ResultPageArguments(
+                      bmiResult: calculatorBrain.calculateBMI(),
+                      resultText: calculatorBrain.getResult(),
+                      interpretationText: calculatorBrain.getInterpretation(),
+                    ));
+              }
+            },
           ),
         ],
       ),

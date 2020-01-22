@@ -1,7 +1,9 @@
-import 'package:bmi_calculator/constants.dart';
-import 'package:bmi_calculator/human.dart';
-import 'package:bmi_calculator/page_footer.dart';
 import 'package:flutter/material.dart';
+
+import 'package:bmi_calculator/constants.dart';
+
+import 'package:bmi_calculator/components/bmi_card.dart';
+import 'package:bmi_calculator/components/bottom_button.dart';
 
 const double labelSize = 22.0;
 
@@ -11,87 +13,55 @@ class ResultPage extends StatefulWidget {
 }
 
 class _ResultPageState extends State<ResultPage> {
-  Text renderBodyType(bodyType) {
-    switch (bodyType) {
-      case BodyType.normal:
-        return Text(
-          'Normal',
-          style: TextStyle(color: Colors.green, fontSize: labelSize),
-        );
-      case BodyType.overweight:
-      default:
-        return Text(
-          'Overweight',
-          style: TextStyle(color: Colors.red, fontSize: labelSize),
-        );
-    }
-  }
-
-  Text renderBodyTypeDescription(bodyType) {
-    switch (bodyType) {
-      case BodyType.normal:
-        return Text(
-          'Good job',
-          style: TextStyle(fontSize: labelSize),
-        );
-      case BodyType.overweight:
-      default:
-        return Text(
-          'Hum Hummmmm',
-          style: TextStyle(fontSize: labelSize),
-        );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final ResultArguments arguments = ModalRoute.of(context).settings.arguments;
+    final ResultPageArguments arguments = ModalRoute.of(context).settings.arguments;
     return Scaffold(
         appBar: AppBar(
           title: Text('BMI Calculator'),
         ),
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(25.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Text('Your Result',
-                        style: TextStyle(
-                          fontSize: 40.0,
-                          fontWeight: FontWeight.bold,
-                        )),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: kActiveCardColor,
-                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            this.renderBodyType(arguments.bodyType),
-                            Text(
-                              arguments.bmi.toStringAsFixed(1),
-                              style: TextStyle(
-                                  fontSize: 80.0, fontWeight: FontWeight.bold),
-                            ),
-                            this.renderBodyTypeDescription(arguments.bodyType)
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
+              child: Container(
+                padding: EdgeInsets.all(15.0),
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  'Your Result',
+                  style: kPageTitle,
                 ),
               ),
             ),
-            PageFooter(
+            Expanded(
+              flex: 5,
+              child: Container(
+                child: BMICard(
+                  color: kActiveCardColor,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        arguments.resultText,
+                        style: kResultTextStyle,
+                      ),
+                      Text(
+                        arguments.bmiResult,
+                        style: kBMITextStyle,
+                      ),
+                      Text(
+                        arguments.interpretationText,
+                        textAlign: TextAlign.center,
+                        style: kBodyTextStyle,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            BottomButton(
               label: 'RE-CALCULATE',
               onPress: () => Navigator.pop(context),
             )
@@ -100,8 +70,14 @@ class _ResultPageState extends State<ResultPage> {
   }
 }
 
-class ResultArguments {
-  double bmi;
-  BodyType bodyType;
-  ResultArguments({@required this.bmi, @required this.bodyType});
+class ResultPageArguments {
+  ResultPageArguments({
+    @required this.bmiResult,
+    @required this.resultText,
+    @required this.interpretationText,
+  });
+
+  String bmiResult;
+  String resultText;
+  String interpretationText;
 }

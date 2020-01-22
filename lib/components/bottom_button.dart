@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'constants.dart';
+import 'package:bmi_calculator/constants.dart';
 
-class PageFooter extends StatelessWidget {
-  PageFooter({@required this.onPress, this.label});
+class BottomButton extends StatelessWidget {
+  BottomButton({@required this.onPress, this.label});
   final Function onPress;
   final String label;
 
@@ -14,10 +14,14 @@ class PageFooter extends StatelessWidget {
       child: Container(
         color: kSecondaryColor,
         margin: EdgeInsets.only(top: 10.0),
+        padding: EdgeInsets.only(bottom: 10.0),
         width: double.infinity,
         height: kBottomContainerHeight,
         child: Center(
-          child: Text(label),
+          child: Text(
+            label,
+            style: kLargeButtonTextStyle,
+          ),
         ),
       ),
     );

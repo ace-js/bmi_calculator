@@ -1,15 +1,17 @@
-class Human {
-  Gender _gender;
-  int _age;
-  int _height;
-  int _weight;
+import 'package:bmi_calculator/enums.dart';
 
+class Human {
   Human({Gender gender, int age, int height, int weight}) {
     this._gender = gender;
     this._age = age;
     this._height = height;
     this._weight = weight;
   }
+
+  Gender _gender;
+  int _age;
+  int _height;
+  int _weight;
 
   Gender getGender() {
     return this._gender;
@@ -48,23 +50,4 @@ class Human {
       this._weight = weight;
     }
   }
-
-  double getBMI() {
-    if (this._weight != null && this._height != null) {
-      double height = this._height / 100;
-      return this._weight / (height * height);
-    }
-    return null;
-  }
-
-  BodyType getBodyType() {
-    double bmi = getBMI();
-    if (bmi <= 25) {
-      return BodyType.normal;
-    }
-    return BodyType.overweight;
-  }
 }
-
-enum Gender { male, female }
-enum BodyType { normal, overweight }
