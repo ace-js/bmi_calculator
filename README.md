@@ -5,14 +5,14 @@
 The objective of this project is to look at how I can customise Flutter Widgets to achieve my own beautiful user interface designs.
 The magic is that I can have a designer on board on my projects, no matter how unconventional his designs are, I can create them using Flutter.
 
-## What I will create
+## What I created
 
-I’m going to make a Body Mass Index Calculator inspired by the beautiful designs made by [Ruben Vaalt](https://dribbble.com/shots/4585382-Simple-BMI-Calculator).
-It will be a multi screen app with simple functionality but full-on custom styling.
+I made a Body Mass Index Calculator inspired by the beautiful designs made by [Ruben Vaalt](https://dribbble.com/shots/4585382-Simple-BMI-Calculator).
+It's a multi screen app with simple functionality but full-on custom styling.
 
 ![Finished App](https://github.com/londonappbrewery/Images/blob/master/bmi-calc-demo.gif)
 
-## What I will learn from this project
+## What I learned from this project
 
 - How to use Flutter themes to create coherent branding. 
 - How to create multi-page apps using Flutter Routes and Navigator.
